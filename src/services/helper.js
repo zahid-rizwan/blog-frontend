@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from '../auth';
 
-export const BASE_URL = 'http://ec2-13-49-100-200.eu-north-1.compute.amazonaws.com:9090';
+export const BASE_URL = 'http://localhost:9090';
 
 export const myAxios = axios.create({
   baseURL: BASE_URL,

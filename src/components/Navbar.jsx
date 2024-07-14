@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaBars, FaFacebook, FaXTwitter, FaXmark } from "react-icons/fa6";
 import { doLogout, getCurrentUser, isLoggedIn } from "../auth";
+import userContext from "./Context/userContext";
 
 const Navbar = () => {
+
+  const userContextData=useContext(userContext)
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -11,7 +15,6 @@ const Navbar = () => {
   let navigate = useNavigate();
   const navItems = [
     { path: "/", link: "Home" },
-    { path: "/services", link: "Services" },
     { path: "/about", link: "About" },
     { path: "/blogs", link: "Blog" },
     { path: "/contact", link: "Contact" },
@@ -25,6 +28,10 @@ const Navbar = () => {
   const logout = () => {
     doLogout(() => {
       setLogin(false);
+      userContextData.setUser({
+        data:{},
+        login:false
+      })
       navigate("/");
     });
   };
@@ -34,7 +41,7 @@ const Navbar = () => {
         <a href="/" className="text-xl font-bold text-white">
           Blog <span className="text-blue-500">ZD</span>
         </a>
-        {/* navbar for large devices */}
+      
         <ul className="md:flex gap-12 text-lg hidden">
           {navItems.map(({ path, link }) => (
             <li className="text-white" key={path}>
@@ -49,8 +56,7 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
-        {/* menu icons
-         */}
+     
         <div className="text-white lg:flex gap-4 items-center hidden">
           <a href="/" className="hover:text-orange-500">
             <FaFacebook />

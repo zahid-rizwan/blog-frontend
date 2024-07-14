@@ -1,12 +1,12 @@
 import React from "react";
-import { loadAllPosts } from "../services/psot-service";
+import { loadAllPosts } from "../services/post-service";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button, IconButton } from "@material-tailwind/react";
 
 
 export function Pagination({postContent,setPostContent}) {
-  console.log("pagination")
+  // console.log("pagination")
   const [active, setActive] = useState(1);
   const changePage=(pageNumber=0,pageSize=10)=>{
     loadAllPosts(pageNumber,pageSize).then((data)=>{
@@ -24,34 +24,35 @@ export function Pagination({postContent,setPostContent}) {
   });
 
   return (
-    <div className="flex items-center gap-4">
-      <Button
-        variant="text"
-        className="flex items-center gap-2"
-        onClick={() => changePage(--postContent.pageNumber)}
-        disabled={postContent.pageNumber == 0}
-      >
-        Previous
-      </Button>
-      <div className="flex items-center gap-2">
-        {[...Array(postContent.totalPages)].map((item, index) => (
-          <IconButton
-            {...getItemProps(index + 1)}
-            key={index}
-            onClick={() => changePage(index, 10)}
-          >
-            {index + 1}
-          </IconButton>
-        ))}
-      </div>
-      <Button
-        variant="text"
-        className="flex items-center gap-2"
-        onClick={() => changePage(++postContent.pageNumber)}
-        disabled={postContent.lastPage}
-      >
-        Next
-      </Button>
-    </div>
+    <></>
+    // <div className="flex items-center gap-4">
+    //   <Button
+    //     variant="text"
+    //     className="flex items-center gap-2"
+    //     onClick={() => changePage(--postContent.pageNumber)}
+    //     disabled={postContent.pageNumber == 0}
+    //   >
+    //     Previous
+    //   </Button>
+    //   <div className="flex items-center gap-2">
+    //     {[...Array(postContent.totalPages)].map((item, index) => (
+    //       <IconButton
+    //         {...getItemProps(index + 1)}
+    //         key={index}
+    //         onClick={() => changePage(index, 10)}
+    //       >
+    //         {index + 1}
+    //       </IconButton>
+    //     ))}
+    //   </div>
+    //   <Button
+    //     variant="text"
+    //     className="flex items-center gap-2"
+    //     onClick={() => changePage(++postContent.pageNumber)}
+    //     disabled={postContent.lastPage}
+    //   >
+    //     Next
+    //   </Button>
+    // </div>
   );
 }

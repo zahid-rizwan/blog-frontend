@@ -9,7 +9,7 @@ import {
 import { loadAllCategories } from "../services/category-service";
 import { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
-import { createPost as doCreatePost } from "../services/psot-service";
+import { createPost as doCreatePost, uploadPostImage } from "../services/post-service";
 import { getCurrentUser } from "../auth";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,7 @@ export function AddPost() {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [categories, setCategories] = useState([]);
-const [user,setUser]=useState(undefined);
+  const [user, setUser] = useState(undefined);
 
   const [post, setPost] = useState({
     title: "",
@@ -25,9 +25,11 @@ const [user,setUser]=useState(undefined);
     categoryId: "",
   });
 
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
     // console.log(getCurrentUser());
-    setUser(getCurrentUser())
+    setUser(getCurrentUser());
     // console.log(user)
     loadAllCategories()
       .then((data) => {
@@ -54,38 +56,45 @@ const [user,setUser]=useState(undefined);
     setContent(newContent);
   };
   const createPost = (event) => {
- 
     event.preventDefault();
     // Handle form submission logic here
-    if(post.title.trim()==''){
-      alert("post title is required")
-     
-      return;
+    if (post.title.trim() == "") {
+      alert("post title is required");
 
-    }
-    if(post.content.trim()===''){
-      alert("post content is required")
       return;
+    }
+    if (post.content.trim() === "") {
+      alert("post content is required");
+      return;
+    }
+    if (post.categoryId.trim() === "") {
+      alert("category is required");
+      return;
+    }
+    post["userId"] = user.id;
+    doCreatePost(post)
+      .then((data) => {
 
-    }
-    if(post.categoryId.trim()===''){
-      alert("category is required")
-      return;
-      
-    }
-    post['userId']=user.id
-    doCreatePost (post).then(data=>{
-      toast.success("Post Created")
-      setPost({
-        title:'',
-        content:'',
-        categoryId:''
+        uploadPostImage(image,data.id).then(data=>{
+          toast.success("image uploaded")
+        }).catch(error=>{
+          toast.error("image not uploaded ")
+        })
+        toast.success("Post Created");
+        setPost({
+          title: "",
+          content: "",
+          categoryId: "",
+        });
       })
-    }).catch((error)=>{
-      toast.error("Post not created")
-    })
+      .catch((error) => {
+        toast.error("Post not created");
+      });
+  };
+  const handleImageChamge =(event)=>{
 
-  }; 
+    setImage(event.target.files[0])
+  }
   return (
     <Card color="transparent" className="p-4 w-9/12">
       <Typography color="gray" className="mt-1 font-normal">
@@ -118,10 +127,28 @@ const [user,setUser]=useState(undefined);
             onChange={handleContentChange}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
+            Image
+          </Typography>
+          <Input
+            type="file"
+            size="lg"
+            id="file"
+            onChange={handleImageChamge}
+            className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            labelProps={{
+              className: "before:content-none after:content-none",
+            }}
+            name="file"
+          />
+          <Typography variant="h6" color="blue-gray" className="-mb-3">
             Category
           </Typography>
           <div className="">
-            <Select  label="" onChange={handleCategoryChange} className="!border-t-blue-gray-200 focus:!border-t-gray-900">
+            <Select
+              label=""
+              onChange={handleCategoryChange}
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+            >
               {categories.map((category) => (
                 <Option
                   value={category.categoryId.toString()}

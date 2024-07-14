@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { login } from "../services/user-service";
 import { doLogin } from "../auth";
 import { useNavigate } from "react-router-dom";
+import userContext from "../components/Context/userContext";
 
 const LogIn = () => {
+  const userContextData = useContext(userContext)
   const [loginDetail, setLoginDeatail] = useState({
     email: "",
     password: "",
   });
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const handleOnChange = (event, field) => {
     setLoginDeatail({
       ...loginDetail,
@@ -18,26 +20,32 @@ const LogIn = () => {
   };
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    console.log(loginDetail)
-    if(loginDetail.email.trim()== ""||
-       loginDetail.password.trim()==""){
-        toast.error("Username or Password is required");
-        return;
-       }
-       login(loginDetail).then((data)=>{
-            console.log("Login:")
-            console.log(data)
-            doLogin(data,()=>{
-              console.log("login details is saved")
-              navigate("/user/dashboard")
-            })
-            toast.success("login success")
-       }).catch((error)=>{
+    console.log(loginDetail);
+    if (loginDetail.email.trim() == "" || loginDetail.password.trim() == "") {
+      toast.error("Username or Password is required");
+      return;
+    }
+    login(loginDetail)
+      .then((data) => {
+        console.log("Login:");
+        console.log(data);
+        doLogin(data, () => {
+          console.log("login details is saved");
+          userContextData.setUser({
+            data:data,
+            login:true
+          })
+          
+          navigate("/user/dashboard");
+        });
+        toast.success("login success");
+      })
+      .catch((error) => {
         console.log(error);
-        toast.error("something went wrong")
-       })
+        toast.error("something went wrong");
+      });
   };
-  
+
   return (
     <div>
       <section className="bg-gray-5">
