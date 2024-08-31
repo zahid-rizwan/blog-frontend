@@ -9,7 +9,10 @@ import {
 import { loadAllCategories } from "../services/category-service";
 import { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
-import { createPost as doCreatePost, uploadPostImage } from "../services/post-service";
+import {
+  createPost as doCreatePost,
+  uploadPostImage,
+} from "../services/post-service";
 import { getCurrentUser } from "../auth";
 import { toast } from "react-toastify";
 
@@ -74,12 +77,13 @@ export function AddPost() {
     post["userId"] = user.id;
     doCreatePost(post)
       .then((data) => {
-
-        uploadPostImage(image,data.id).then(data=>{
-          toast.success("image uploaded")
-        }).catch(error=>{
-          toast.error("image not uploaded ")
-        })
+        uploadPostImage(image, data.id)
+          .then((data) => {
+            toast.success("image uploaded");
+          })
+          .catch((error) => {
+            toast.error("image not uploaded ");
+          });
         toast.success("Post Created");
         setPost({
           title: "",
@@ -91,10 +95,9 @@ export function AddPost() {
         toast.error("Post not created");
       });
   };
-  const handleImageChamge =(event)=>{
-
-    setImage(event.target.files[0])
-  }
+  const handleImageChamge = (event) => {
+    setImage(event.target.files[0]);
+  };
   return (
     <Card color="transparent" className="p-4 w-9/12">
       <Typography color="gray" className="mt-1 font-normal">
@@ -144,20 +147,23 @@ export function AddPost() {
             Category
           </Typography>
           <div className="">
+            
             <Select
-              label=""
-              onChange={handleCategoryChange}
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-            >
-              {categories.map((category) => (
-                <Option
-                  value={category.categoryId.toString()}
-                  key={category.categoryId.toString()}
+                  value=""
+                  label=""
+                  name="categoryId"
+                  onChange={handleCategoryChange}
+                  className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                 >
-                  {category.categoryTitle}
-                </Option>
-              ))}
-            </Select>
+                  {categories.map((category) => (
+                    <Option
+                      value={category.categoryId.toString()}
+                      key={category.categoryId.toString()}
+                    >
+                      {category.categoryTitle}
+                    </Option>
+                  ))}
+                </Select>
           </div>
         </div>
 

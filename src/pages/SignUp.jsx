@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { signup } from "../services/user-service";
 import { toast } from "react-toastify";
+import { Link} from "react-router-dom";
 const SignUp = () => {
   const [data, setData] = useState({
     name: "",
@@ -147,12 +148,7 @@ const SignUp = () => {
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?{" "}
-                  <a
-                    href="#"
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    Login here
-                  </a>
+                  <Link to={"/login"} className="font-medium text-blue-600 hover:underline dark:text-primary-500"> Login here</Link>
                 </p>
               </form>
             </div>

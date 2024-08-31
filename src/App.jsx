@@ -11,14 +11,14 @@ import Navbar from './components/Navbar'
 
 
 function App() {
-
+  // style={{backgroundColor:"#e9ebee"}}
   return (
-    <>
+    <div className='flex flex-col justify-between  min-h-[100vh]' >
     {/* <NewNavbar/> */}
     <Navbar/>
     <Outlet/>
     <FooterWithLogo/>
-</>
+</div>
   )
 }
 

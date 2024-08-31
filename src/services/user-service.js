@@ -19,3 +19,10 @@ export const signup=async(user)=>{
 export const login=(loginDetail)=>{
     return myAxios.post('api/auth/login',loginDetail).then((response)=>response.data);
 }
+export const forgotPassword = (email) =>{
+    return myAxios.post(`/forgotPassword/verifyMail/${email}`)
+}
+
+export const otpVerification = (otp,email)=>{
+    return myAxios.post(`/forgotPassword/verifyOtp/${otp}/${email}`).then(response=>response.data)
+}

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { AddPost } from "../components/AddPost";
 import { getCurrentUser } from "../auth";
-import { data } from "autoprefixer";
 import { deletePostService, loadPostUserWise } from "../services/post-service";
 import Post from "../components/Post";
 import { toast } from "react-toastify";
@@ -16,7 +15,7 @@ const DashBoard = () => {
     
   }, []);
   const loadPostData = () =>{
-    loadPostUserWise(getCurrentUser().id)
+    loadPostUserWise(getCurrentUser()?.id)
       .then((data) => {
         console.log(data);
         setPosts([...data]);

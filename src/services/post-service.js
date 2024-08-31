@@ -41,3 +41,8 @@ export const loadAllPosts=(pageNumber,pageSize)=>{
  export const deletePostService = (postId) =>{
     return privateAxios.delete(`/api/posts/${postId}`).then(resp=>resp.data)
  }
+
+ export const updatePost = (post,postId) =>{
+   console.log(post)
+   return privateAxios.put(`/api/posts/${postId}`,post).then((resp)=>resp.data)
+ }

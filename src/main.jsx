@@ -17,6 +17,7 @@ import Category from './components/Category.jsx';
 import UserProvider from './components/Context/UserProvider'; // Import UserProvider
 import UpdateBlog from './pages/UpdateBlog.jsx';
 import PrivateRoute from './pages/PrivateRoute.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 
 const router = createHashRouter([ 
   {
@@ -26,6 +27,10 @@ const router = createHashRouter([
       {
         path: "/",
         element: <Home />
+      },
+      {
+        path: "/forgotPassword",
+        element: <ForgotPassword/>
       },
       {
         path: "/blogs",
